@@ -7,10 +7,14 @@ load_dotenv()
 
 API_ID   = os.getenv("API_ID")
 API_HASH = os.getenv("API_HASH")
+SESSION_STRING = os.getenv("SESSION_STRING")
 
 # Userbot ob'ekti
-# workdir sifatida joriy papka ishlatiladi, "my_account.session" fayli yaratiladi
-app_ub = Client("my_account", api_id=API_ID, api_hash=API_HASH)
+# Agar SESSION_STRING bo'lsa, undan foydalanamiz, aks holda fayldan
+if SESSION_STRING:
+    app_ub = Client("my_account", api_id=API_ID, api_hash=API_HASH, session_string=SESSION_STRING)
+else:
+    app_ub = Client("my_account", api_id=API_ID, api_hash=API_HASH)
 
 logger = logging.getLogger(__name__)
 
