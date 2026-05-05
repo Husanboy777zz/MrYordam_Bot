@@ -286,7 +286,7 @@ async def client_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     save_client(owner_id, cli_name, cli_phone, apt.strftime("%Y-%m-%d %H:%M:%S"))
     
     await update.message.reply_text(
-        f"✅ *Mijoz qo'shildi\\!*\n🕐 Vaqti: {apt.strftime('%d.%m.%Y %H:%M')}",
+        f"✅ *Mijoz qo'shildi\\!*\n🕐 Vaqti: {apt.strftime('%d\\.%m\\.%Y %H:%M')}",
         reply_markup=after_add_kb(),
         parse_mode=ParseMode.MARKDOWN_V2
     )
