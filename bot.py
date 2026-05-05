@@ -56,7 +56,8 @@ from database import (
     update_user_template,
 )
 from sms import send_sms
-from userbot_client import send_userbot_msg, app_ub
+# Userbot importini keyinroqqa suramiz
+# from userbot_client import send_userbot_msg, app_ub
 
 load_dotenv()
 
@@ -492,6 +493,7 @@ async def sms_job(application: Application):
         msg = f"Hurmatli {client_name}, {template}! {shop_name}"
         
         # 1. Userbot orqali Telegram xabar yuborishga urinish
+        from userbot_client import send_userbot_msg
         logger.info(f"Userbot orqali xabar yuborishga urinish: {client_name} ({client_phone})")
         ok = await send_userbot_msg(client_phone, msg)
         
@@ -519,8 +521,16 @@ async def sms_job(application: Application):
 
 
 def main():
+    # Loopni oldindan yaratish
+    try:
+        asyncio.get_event_loop()
+    except RuntimeError:
+        asyncio.set_event_loop(asyncio.new_event_loop())
+
     # Render uchun veb-serverni fonda ishga tushiramiz
     threading.Thread(target=run_health_server, daemon=True).start()
+    
+    from userbot_client import app_ub # Endi import qilish xavfsiz
     
     if not BOT_TOKEN:
         raise RuntimeError("BOT_TOKEN .env faylida ko'rsatilmagan!")
