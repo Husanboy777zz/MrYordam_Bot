@@ -6,7 +6,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-API_ID   = os.getenv("API_ID")
+API_ID_RAW = os.getenv("API_ID")
+try:
+    API_ID = int(API_ID_RAW) if API_ID_RAW else None
+except ValueError:
+    API_ID = None
+
 API_HASH = os.getenv("API_HASH")
 SESSION_STRING = os.getenv("SESSION_STRING")
 

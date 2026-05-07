@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 async def main():
-    api_id = os.getenv("API_ID")
+    api_id_raw = os.getenv("API_ID")
+    api_id = int(api_id_raw) if api_id_raw else None
     api_hash = os.getenv("API_HASH")
     
     if not api_id or not api_hash:
