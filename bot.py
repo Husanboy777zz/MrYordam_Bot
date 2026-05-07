@@ -500,7 +500,7 @@ async def sms_job(application: Application):
         # 2. Agar Userbot o'xshamasa, SMS ga urinish (ixtiyoriy)
         if not ok:
             logger.info(f"Userbot orqali xabar ketmadi, SMS ga urinish: {client_phone}")
-            ok = send_sms(client_phone, msg)
+            ok = await asyncio.to_thread(send_sms, client_phone, msg)
         
         mark_notified(client_id)
         
@@ -603,9 +603,22 @@ def main():
         ],
     )
 
+    async def status_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        from database import get_pending_clients
+        pending = get_pending_clients()
+        now = datetime.now(UZ_TZ)
+        text = (
+            f"📊 *Bot holati:*\n\n"
+            f"🕒 Hozirgi vaqt: `{now.strftime('%Y-%m-%d %H:%M:%S')}`\n"
+            f"⏳ Navbatdagi mijozlar: *{len(pending)}* ta\n"
+            f"✅ Bot ishlamoqda."
+        )
+        await update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN)
+
     # ── Handlers ──
     app.add_handler(CommandHandler("start", cmd_start))
     app.add_handler(CommandHandler("ping", ping_handler))
+    app.add_handler(CommandHandler("status", status_handler))
     app.add_handler(reg_conv)
     app.add_handler(cli_conv)
     app.add_handler(hist_conv)

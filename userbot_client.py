@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import os
 from pyrogram import Client
@@ -35,7 +36,15 @@ async def send_userbot_msg(phone: str, message: str) -> bool:
     try:
         if not app_ub.is_connected:
             logger.info("Userbot ulanmagan, ulanishga urinish...")
-            await app_ub.start()
+            try:
+                # 30 soniya kutamiz, agar ulanmasa timeout beradi
+                await asyncio.wait_for(app_ub.start(), timeout=30)
+            except asyncio.TimeoutError:
+                logger.error("Userbot ulanishda vaqt tugadi (Timeout).")
+                return False
+            except Exception as e:
+                logger.error(f"Userbotni ishga tushirib bo'lmadi: {e}")
+                return False
             
         # PeerIdInvalid xatosini oldini olish uchun raqamni kontaktga qo'shishga urinish
         from pyrogram import types, errors
